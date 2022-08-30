@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :articles
+  resources :images
+  
+  resources :articles do
+    resources :comments
+  end
+  
   root "articles#index"
   devise_for :users,
              controllers: {

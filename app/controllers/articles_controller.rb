@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: %i[ show update destroy ]
+  before_action :authenticate_user!, only: %i[ new create edit udpate destroy ]
 
   # GET /articles
   def index
@@ -27,7 +28,8 @@ class ArticlesController < ApplicationController
 
   # PATCH/PUT /articles/1
   def update
-    if (current_user === get_user_from_token) && @article.update(article_params)
+
+    if (@article.user_id === current_user.id) && @article.update(article_params)
       render json: @article
     else
       render json: @article.errors, status: :unprocessable_entity
@@ -51,7 +53,7 @@ class ArticlesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def article_params
-      params.require(:article).permit(:title, :content, :user_id)
+      params.require(:article).permit(:title, :content, :private)
     end
   
     def get_user_from_token
