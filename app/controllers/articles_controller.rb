@@ -5,13 +5,12 @@ class ArticlesController < ApplicationController
   # GET /articles
   def index
     @articles = Article.all
-
-    render json: @articles
+    render json: @articles.as_json(include: :user)
   end
 
   # GET /articles/1
   def show
-    render json: @article
+    render json: @article.as_json(include: :user)
   end
 
   # POST /articles

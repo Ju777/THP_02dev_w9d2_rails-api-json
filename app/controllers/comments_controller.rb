@@ -4,8 +4,7 @@ class CommentsController < ApplicationController
   # GET /comments
   def index
     @comments = Comment.all
-
-    render json: @comments
+    render json: @comments.as_json(only: :content, include: [{user: {only: :email}}, {article: {only: :title}}] )
   end
 
   # GET /comments/1
